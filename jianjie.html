@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>拉菲艾拉小姐的个人网站</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'Microsoft YaHei', 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #6a11cb;
+        }
+        h1 {
+            font-size: 42px;
+            color: #fff;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #6a11cb, #2575fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .subtitle {
+            color: #aaa;
+            font-size: 18px;
+        }
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+        .character-art {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .art-frame {
+            width: 100%;
+            max-width: 500px;
+            border: 3px solid #6a11cb;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(106, 17, 203, 0.3);
+            margin-bottom: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .art-frame:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(106, 17, 203, 0.5);
+        }
+        .art-img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .art-caption {
+            color: #ccc;
+            font-style: italic;
+            text-align: center;
+        }
+        .character-info {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(30, 30, 30, 0.8);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid #333;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+        }
+        .info-title {
+            font-size: 28px;
+            color: #6a11cb;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #444;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .info-item {
+            margin-bottom: 15px;
+        }
+        .info-label {
+            color: #6a11cb;
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+        .info-value {
+            color: #fff;
+            font-size: 18px;
+        }
+        .description {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+        }
+        .description p {
+            color: #ddd;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+        .gallery-section {
+            margin-top: 40px;
+        }
+        .section-title {
+            font-size: 32px;
+            color: #fff;
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #2575fc;
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .gallery-item {
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            height: 200px;
+            position: relative;
+        }
+        .gallery-item:hover {
+            transform: scale(1.05);
+            border-color: #6a11cb;
+            box-shadow: 0 10px 20px rgba(106, 17, 203, 0.4);
+        }
+        .gallery-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+        .modal-content {
+            position: relative;
+            max-width: 90vw;
+            max-height: 90vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-img {
+            max-width: 100%;
+            max-height: 80vh;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            border-radius: 10px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8);
+            display: block;
+        }
+        .close-modal {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: #6a11cb;
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .img-caption {
+            text-align: center;
+            color: #fff;
+            margin-top: 15px;
+            font-size: 18px;
+        }
+        .back-button-container {
+            text-align: center;
+            margin-top: 60px;
+            padding: 40px 0;
+            border-top: 1px solid #333;
+        }
+        .back-button {
+            display: inline-block;
+            padding: 16px 50px;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 20px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            box-shadow: 0 5px 20px rgba(106, 17, 203, 0.3);
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+        .back-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(106, 17, 203, 0.6);
+            border-color: #fff;
+            background: linear-gradient(135deg, #2575fc, #6a11cb);
+        }
+        .back-button:active {
+            transform: translateY(-2px) scale(1.02);
+        }
+        .back-button::before {
+            content: "←";
+            margin-right: 10px;
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+        .back-button:hover::before {
+            transform: translateX(-5px);
+        }
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+
+            .gallery {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #222;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #6a11cb, #2575fc);
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>拉菲艾拉小姐</h1>
+            <p class="subtitle">罗德岛干员档案</p>
+        </header>
+        <div class="main-content">
+            <div class="character-art">
+                <div class="art-frame">
+                    <img src="立绘.jpg" alt="拉菲艾拉立绘" class="art-img" id="main-art">
+                </div>
+            </div>
+            <div class="character-info">
+                <h2 class="info-title">干员档案</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">姓名</span>
+                        <span class="info-value">拉菲艾拉</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">代号</span>
+                        <span class="info-value">羽毛笔</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">性别</span>
+                        <span class="info-value">女</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">生日</span>
+                        <span class="info-value">8月29日</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">出生地</span>
+                        <span class="info-value">玻利瓦尔</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">种族</span>
+                        <span class="info-value">黎博利</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">职业</span>
+                        <span class="info-value">近卫</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">战斗经验</span>
+                        <span class="info-value">三年</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">爱好</span>
+                        <span class="info-value">调酒</span>
+                    </div>
+                </div>
+                <div class="description">
+                    <h3>个人简介</h3>
+                    <p>给人感觉有些迷糊的黎博利女性</p>
+                    <h3 style="margin-top: 20px;">矿石病感染情况</h3>
+                    <p>参照医学检测报告，确认为非感染者</p>
+                </div>
+            </div>
+        </div>
+        <div class="gallery-section">
+            <h2 class="section-title">拉菲艾拉的相册</h2>
+            <div class="gallery" id="imageGallery">
+            </div>
+        </div>
+        <div class="back-button-container">
+            <a href="index.html">返回首页</a>
+        </div>
+    </div>
+    <div class="modal-overlay" id="imageModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeModal">&times;</button>
+            <img src="" alt="" class="modal-img" id="modalImage">
+            <p class="img-caption" id="modalCaption"></p>
+        </div>
+    </div>
+
+    <script>
+        const imageData = [
+           {src:"抱花羽毛笔.jpg",title:"抱花"},
+           {src:"比耶照.jpg",title:"比耶"},
+           {src:"和极光1.jpg",title:"和极光"},
+           {src:"和极光2.jpg",title:"和极光"},
+           {src:"和极光3.jpg",title:"和极光"},
+           {src:"黑白俯视.jpg",title:"俯视"},
+           {src:"躺在沙发上.jpg",title:"沙发"},
+           {src:"夜晚看书.jpg",title:"看书"},
+           {src:"音律新衣.jpg",title:"音律"},
+           {src:"泳衣羽毛笔.jpg",title:"泳衣"},
+           {src:"立绘.jpg",title:"立绘"},
+           {src:"精二立绘.jpg",title:"精二"}
+        ];
+        const gallery = document.getElementById('imageGallery');
+        const modal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        const modalCaption = document.getElementById('modalCaption');
+        const closeModal = document.getElementById('closeModal');
+        function generateGallery() {
+            imageData.forEach((image, index) => {
+                const galleryItem = document.createElement('div');
+                galleryItem.className = 'gallery-item';
+                galleryItem.dataset.index = index;
+
+                const img = document.createElement('img');
+                img.src = image.src;
+                img.alt = image.title;
+                img.className = 'gallery-img';
+                img.onerror = function() {
+                    this.src = 'https://ak.hypergryph.com/#index';
+                };
+
+                galleryItem.appendChild(img);
+                gallery.appendChild(galleryItem);
+                galleryItem.addEventListener('click', () => openModal(index));
+            });
+        }
+        function openModal(index) {
+            const image = imageData[index];
+            modalImage.src = image.src;
+            modalCaption.textContent = image.title;
+            modal.style.display = 'flex';
+            modalImage.onerror = function() {
+                this.src = 'https://ak.hypergryph.com/#index';
+                modalCaption.textContent = '图片加载失败 - 示例图片';
+            };
+        }
+        function closeModalFunc() {
+            modal.style.display = 'none';
+        }
+        closeModal.addEventListener('click', closeModalFunc);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModalFunc();
+            }
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.style.display === 'flex') {
+                closeModalFunc();
+            }
+        });
+        const mainArt = document.getElementById('main-art');
+        if (mainArt) {
+            mainArt.onerror = function() {
+                this.src = 'https://ak.hypergryph.com/#index';
+                this.alt = '拉菲艾拉立绘（示例图片）';
+                document.querySelector('.art-caption').textContent = '精英二立绘 · 示例图片';
+            };
+        }
+        generateGallery();
+        document.querySelectorAll('.info-item').forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateX(5px)';
+                this.style.transition = 'transform 0.2s ease';
+            });
+
+            item.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateX(0)';
+            });
+        });
+        const backButton = document.querySelector('.back-button');
+        if (backButton) 
+        {
+            backButton.addEventListener('click', function(e)
+            {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 200);
+            });
+        }
+    </script>
+</body>
+</html>
